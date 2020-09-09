@@ -28,4 +28,8 @@ export class AuthService {
       this.exibeMenu.emit(false);
     }    
   }
+
+  verificaAutenticacao(){
+    return this.usuarioAutenticado;
+  }
 }

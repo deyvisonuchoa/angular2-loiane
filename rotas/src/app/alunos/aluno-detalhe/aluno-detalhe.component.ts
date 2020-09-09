@@ -1,3 +1,4 @@
+import { Aluno } from './../aluno';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -11,18 +12,25 @@ import { Subscription } from 'rxjs';
 })
 export class AlunoDetalheComponent implements OnInit {
 
-  aluno: any;
+  aluno: Aluno;
   private inscricao: Subscription;
 
   constructor(private route: ActivatedRoute, private alunosService: AlunosService,
     private router: Router) { }
 
   ngOnInit(): void {
-    this.inscricao = this.route.params.subscribe(
+   /* this.inscricao = this.route.params.subscribe(
       (params: any) => {
         let id = params['id'];
 
         this.aluno = this.alunosService.getAluno(id);
+      }
+    );*/
+
+    this.inscricao = this.route.data.subscribe(
+      (data/*: {aluno: Aluno}*/) => {
+        console.log(data);
+        this.aluno = data.aluno;
       }
     );
   }

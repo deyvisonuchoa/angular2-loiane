@@ -1,4 +1,5 @@
 
+
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
@@ -8,11 +9,18 @@ import { AppRoutingModule } from './app-routing.module';
 import { LoginModule } from './login/login.module';
 import { HeaderModule } from './header/header.module';
 import { HomeModule } from './home/home.module';
+
 import { AuthService } from './login/auth.service';
+
+import { AuthGuard } from './guards/auth-guard';
+import { AlunosGuard } from './guards/alunos.guard';
+import { CursosGuard } from './guards/cursos.guard';
+import { PaginaNaoEncontradaComponent } from './pagina-nao-encontrada/pagina-nao-encontrada.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    PaginaNaoEncontradaComponent
   ],
   imports: [
     BrowserModule,
@@ -22,8 +30,13 @@ import { AuthService } from './login/auth.service';
     AppRoutingModule
   ],
   providers: [ 
-    AuthService
+    AuthService,
+    AuthGuard,
+    CursosGuard,
+    AlunosGuard
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [
+    AppComponent,
+  ]
 })
 export class AppModule { }
