@@ -24,7 +24,7 @@ const appRoutes: Routes = [
     { path: 'home', component: HomeComponent,
     canActivate: [AuthGuard]
    },
-   {path: '', redirectTo: '/home'},
+   {path: '', redirectTo: '/home',pathMatch: 'full'},
    { path: '**', component: PaginaNaoEncontradaComponent
   //,canActivate: [AuthGuard]
    }

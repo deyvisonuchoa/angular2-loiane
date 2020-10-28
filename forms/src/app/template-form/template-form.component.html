@@ -33,7 +33,7 @@
             </app-campo-control> 
         </div> 
     </div>
-
+    <div ngModelGroup="endereco">
     <div class="form-group">
         <div class="col-md-3"
         [class.has-error]="!cep.valid && cep.touched"
@@ -121,7 +121,7 @@
             </app-campo-control> 
         </div>
     </div>
-
+</div>
     <button type="submit" class="btn btn-primary"
     [disabled]="!f.valid">Submit</button>
 
