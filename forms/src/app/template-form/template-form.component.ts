@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -13,7 +14,7 @@ export class TemplateFormComponent implements OnInit {
   }
   //user: {id: number,nome:String, email: String};
   
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
   }
@@ -32,6 +33,24 @@ export class TemplateFormComponent implements OnInit {
     return {
       'has-error': this.verificaValidTouched(campo),
       'has-feedback': this.verificaValidTouched(campo)
+    }
+  }
+
+  consultaCep(cep){
+    cep.replace(/\D/g, '');
+
+    if(cep != ""){
+      let validacep = /^[0-9]{8}$/;
+
+      if(validacep.test(cep)){
+        
+        let url: string = `https://viacep.com.br/ws/${cep}/json`;
+        
+        this.http.get(url).subscribe( (response) => {
+          console.log(response);
+        })
+
+      }
     }
   }
 
