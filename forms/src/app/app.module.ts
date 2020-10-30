@@ -1,3 +1,4 @@
+import { DataFormModule } from './data-form/data-form.module';
 import { TemplateFormModule } from './template-form/template-form.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -18,7 +19,8 @@ import { FormsModule } from '@angular/forms';
     AppRoutingModule,
     FormsModule,
     TemplateFormModule,
-    HttpClientModule
+    HttpClientModule,
+    DataFormModule
   ],
   providers: [],
   bootstrap: [AppComponent]
