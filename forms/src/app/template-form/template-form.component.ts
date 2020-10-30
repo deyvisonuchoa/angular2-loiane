@@ -21,9 +21,12 @@ export class TemplateFormComponent implements OnInit {
   }
 
   onSubmit(form){
-    console.log(form);
-    //console.log(form.value.nome);
-    console.log(this.usuario)
+    // console.log(form);
+    // console.log(JSON.stringify(form.value));
+    this.http.post("https://httpbin.org/post", JSON.stringify(form.value))
+    .subscribe( data => {
+                    console.log(data)
+                  });
   }
 
   verificaValidTouched(campo){
@@ -56,7 +59,7 @@ export class TemplateFormComponent implements OnInit {
   }
 
   complementaEndereco(dados, form){
-
+    
     /*
     console.log(dados);
     console.log(dados.logradouro);
