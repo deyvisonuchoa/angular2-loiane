@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-template-form',
@@ -36,22 +37,70 @@ export class TemplateFormComponent implements OnInit {
     }
   }
 
-  consultaCep(cep){
+  consultaCep(cep, form: NgForm){
     cep.replace(/\D/g, '');
 
     if(cep != ""){
       let validacep = /^[0-9]{8}$/;
 
       if(validacep.test(cep)){
+
+        this.ressetaDadosEndereco(form);
         
         let url: string = `https://viacep.com.br/ws/${cep}/json`;
         
-        this.http.get(url).subscribe( (response) => {
-          console.log(response);
-        })
+        this.http.get(url).subscribe( (response) => this.complementaEndereco(response, form));
 
       }
     }
+  }
+
+  complementaEndereco(dados, form){
+
+    /*
+    console.log(dados);
+    console.log(dados.logradouro);
+    console.log(form);
+
+    form.setValue({
+      nome: form.value.nome,
+      email: form.value.email,
+      endereco: {
+        cep: dados.cep,
+        numero: "",
+        complemento: dados.complemento,
+        rua: dados.logradouro,
+        bairro: dados.bairro,
+        cidade: dados.localidade,
+        estado: dados.uf
+      }
+    });
+    
+    */
+
+    form.form.patchValue({
+      endereco: {
+        cep: dados.cep,
+        complemento: dados.complemento,
+        rua: dados.logradouro,
+        bairro: dados.bairro,
+        cidade: dados.localidade,
+        estado: dados.uf
+      }
+    })
+  }
+
+  ressetaDadosEndereco(form){
+    form.form.patchValue({
+      endereco: {
+        cep: null,
+        complemento: null,
+        rua:null,
+        bairro: null,
+        cidade: null,
+        estado: null
+      }
+    })
   }
 
 }
