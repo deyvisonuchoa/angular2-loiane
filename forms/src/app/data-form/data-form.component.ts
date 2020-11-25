@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Endereco } from '../models/endereco';
 
 @Component({
   selector: 'app-data-form',
@@ -16,29 +17,114 @@ export class DataFormComponent implements OnInit {
   ngOnInit(): void {
     /*this.form = new FormGroup({
       nome: new FormControl(null),
-      email: new FormControl(null)
+      email: new FormControl(null),
+
+      endereco: new FormGroup({
+        cep> new FormControl(null),
+        ...
+      })
     });*/
     this.form = this.formBuilder.group({
-      nome: [null,[Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
-      email: [null, [Validators.required, Validators.email]]
+      nome: [null, [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
+      email: [null, [Validators.required, Validators.email]],
+
+      endereco: this.formBuilder.group({
+        cep: [null, [Validators.required]],
+        numero: [null,[Validators.required]],
+        complemento: [null],
+        rua: [null, [Validators.required]],
+        bairro: [null, [Validators.required]],
+        cidade: [null, [Validators.required]],
+        estado: [null, [Validators.required]]
+      })
     });
 
     // Validators.pattern("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
   }
 
-  onSubmit(){
-    // console.log(this.form.value);
-    this.http.post("https://httpbin.org/post", JSON.stringify(this.form.value))
+  onSubmit(): void{
+    console.log(this.form);
+    this.http.post('https://httpbin.org/post', JSON.stringify(this.form.value))
     .subscribe( data => {
       console.log(data);
 
-      this.form.reset();
-    },(err: any) => alert('erro')
+      this.reset();
+    }, (err: any) => alert('erro')
     );
   }
 
-  reset(){
+  reset(): void{
     this.form.reset();
+  }
+
+  verificaValidTouched(campo: string): boolean{
+    return !this.form.get(campo).valid && this.form.get(campo).touched;
+  }
+
+  verificaEmailInvalido(): boolean{
+    const campoEmail = this.form.get('email');
+    if (campoEmail.errors){
+      return !campoEmail.errors['email'] && campoEmail.touched;
+    }
+  }
+
+
+
+  aplicaCssErro(campo: string): any{
+    return {
+      'has-error': this.verificaValidTouched(campo),
+      'has-feedback': this.verificaValidTouched(campo)
+    };
+  }
+
+  consultaCEP(): void {
+    let cep = this.form.get('endereco.cep').value;
+    
+      cep.replace(/\D/g, '');
+  
+      if(cep != ""){
+        let validacep = /^[0-9]{8}$/;
+  
+        if(validacep.test(cep)){
+  
+          this.ressetaDadosEndereco();
+          
+          let url: string = `https://viacep.com.br/ws/${cep}/json`;
+          
+          this.http.get(url).subscribe( (response) => {
+            console.log(response)
+            this.populaEndereco(response)
+          });
+  
+        }
+      }
+    }
+  ressetaDadosEndereco() {
+    this.form.patchValue({
+      endereco: {
+        rua: null,
+        complemento: null,
+        bairro: null,
+        cidade: null,
+        estado: null
+      }
+    })
+  }
+
+  populaEndereco(endereco) {
+    this.form.patchValue({
+      endereco: {
+        rua: endereco.logradouro,
+        complemento: endereco.complemento,
+        bairro: endereco.bairro,
+        cidade: endereco.localidade,
+        estado: endereco.uf
+      }
+    })
+
+    if(endereco.cep == '23020-560'){
+      this.form.get('nome').setValue('Deyvison');
+    }
   }
 
 }

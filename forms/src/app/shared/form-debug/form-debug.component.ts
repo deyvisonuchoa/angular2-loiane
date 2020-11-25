@@ -7,7 +7,7 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class FormDebugComponent implements OnInit {
 
-  @Input() formDebug:any;
+  @Input() form;
 
   constructor() { }
 
