@@ -1,3 +1,4 @@
+import { ConsultaCepService } from './../shared/services/consulta-cep.service';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -15,14 +16,13 @@ export class DataFormComponent implements OnInit {
   form: FormGroup;
   estados: Estado[];
 
-  constructor(private formBuilder: FormBuilder,private http: HttpClient,private dropdownService: DropdownService) { }
+  constructor(private formBuilder: FormBuilder, private http: HttpClient,
+    private dropdownService: DropdownService, private cepService: ConsultaCepService) { }
 
   ngOnInit(): void {
 
     this.dropdownService.getEstados()
-      .subscribe(dados => console.log(dados));
-
-    //console.log(this.estados);
+      .subscribe(dados => this.estados = dados);
 
     /*this.form = new FormGroup({
       nome: new FormControl(null),
@@ -104,25 +104,15 @@ export class DataFormComponent implements OnInit {
   consultaCEP(): void {
     let cep = this.form.get('endereco.cep').value;
 
-      cep.replace(/\D/g, '');
-
-      if(cep != ""){
-        let validacep = /^[0-9]{8}$/;
-
-        if(validacep.test(cep)){
-
-          this.ressetaDadosEndereco();
-
-          let url: string = `https://viacep.com.br/ws/${cep}/json`;
-
-          this.http.get(url).subscribe( (response) => {
-            console.log(response)
+      if (cep != null && cep !== ''){
+        this.cepService.consultaCEP(cep)
+          .subscribe( (response) => {
             this.populaEndereco(response)
           });
-
-        }
       }
+    // this.ressetaDadosEndereco();
     }
+
   ressetaDadosEndereco() {
     this.form.patchValue({
       endereco: {
