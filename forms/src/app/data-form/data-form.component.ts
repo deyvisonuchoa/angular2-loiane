@@ -1,7 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Endereco } from '../models/endereco';
+import { Endereco } from '../shared/models/endereco';
+import { Estado } from '../shared/models/estado';
+import { DropdownService } from '../shared/services/dropdown.service';
 
 @Component({
   selector: 'app-data-form',
@@ -11,10 +13,17 @@ import { Endereco } from '../models/endereco';
 export class DataFormComponent implements OnInit {
 
   form: FormGroup;
+  estados: Estado[];
 
-  constructor(private formBuilder: FormBuilder,private http: HttpClient) { }
+  constructor(private formBuilder: FormBuilder,private http: HttpClient,private dropdownService: DropdownService) { }
 
   ngOnInit(): void {
+
+    this.dropdownService.getEstados()
+      .subscribe(dados => console.log(dados));
+
+    //console.log(this.estados);
+
     /*this.form = new FormGroup({
       nome: new FormControl(null),
       email: new FormControl(null),
@@ -65,7 +74,7 @@ export class DataFormComponent implements OnInit {
        if (controle instanceof FormGroup){
         this.verificaValidacoesFormulario(controle);
       }
-    })    
+    })
   }
 
   reset(): void{
@@ -94,23 +103,23 @@ export class DataFormComponent implements OnInit {
 
   consultaCEP(): void {
     let cep = this.form.get('endereco.cep').value;
-    
+
       cep.replace(/\D/g, '');
-  
+
       if(cep != ""){
         let validacep = /^[0-9]{8}$/;
-  
+
         if(validacep.test(cep)){
-  
+
           this.ressetaDadosEndereco();
-          
+
           let url: string = `https://viacep.com.br/ws/${cep}/json`;
-          
+
           this.http.get(url).subscribe( (response) => {
             console.log(response)
             this.populaEndereco(response)
           });
-  
+
         }
       }
     }
