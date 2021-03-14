@@ -129,11 +129,22 @@
         </select>
       </div>
 
-      <div class="col-md-3" [ngClass]="aplicaCssErro('tecnologias')">
+      <div class="col-md-4" [ngClass]="aplicaCssErro('tecnologias')">
         <label for="tecnologias" class="control-label">Tecnologias</label>
         <select multiple class="form-control" id="tecnologias" formControlName="tecnologias" >
           <option *ngFor="let tecnologia of tecnologias" [value]=tecnologia.nome> {{ tecnologia.nome }} </option>
         </select>
+      </div>
+
+      <div class="col-md-4" [ngClass]="aplicaCssErro('newsletter')">
+        <label for="newsletter" class="control-label">Newsletter</label>
+        <div id="newsletter" class="row">
+          <div class="col-sm-4" *ngFor = "let item of newsletterOp">
+            <label for="" class="radio-inline">
+              <input type="radio" [value]="item.valor" formControlName="newsletter" id="newsletter" /> {{item.desc}}
+            </label>
+          </div>
+        </div>
       </div>
     </div>
 
