@@ -1,3 +1,4 @@
+import { Tecnologia } from './../shared/models/tecnologia';
 import { ConsultaCepService } from './../shared/services/consulta-cep.service';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
@@ -18,6 +19,7 @@ export class DataFormComponent implements OnInit {
   //estados: Estado[];
   estados: Observable<Estado[]>;
   cargos: any[];
+  tecnologias: Tecnologia[];
 
   constructor(private formBuilder: FormBuilder, private http: HttpClient,
     private dropdownService: DropdownService, private cepService: ConsultaCepService) { }
@@ -31,15 +33,18 @@ export class DataFormComponent implements OnInit {
 
     this.cargos = this.dropdownService.getCargos();
 
+    this.tecnologias = this.dropdownService.getTecnologias();
+
     /*this.form = new FormGroup({
       nome: new FormControl(null),
       email: new FormControl(null),
 
       endereco: new FormGroup({
-        cep> new FormControl(null),
+        cep: new FormControl(null),
         ...
       })
     });*/
+
     this.form = this.formBuilder.group({
       nome: [null, [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
       email: [null, [Validators.required, Validators.email]],
@@ -54,7 +59,8 @@ export class DataFormComponent implements OnInit {
         estado: [null, [Validators.required]]
       }),
 
-      cargo: [null]
+      cargo: [null],
+      tecnologias: [null]
     });
 
     // Validators.pattern("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
@@ -157,6 +163,10 @@ export class DataFormComponent implements OnInit {
 
   compararCargos(obj1, obj2){
     return obj1 && obj2 ? ( obj1.nome === obj2.nome && obj1.nivel === obj2.nivel) : obj1 === obj2;
+  }
+
+  setarTecnologias(){
+    this.form.get('tecnologias').setValue(['java','javascript','php']);
   }
 
 }

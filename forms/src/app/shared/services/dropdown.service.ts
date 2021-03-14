@@ -1,3 +1,4 @@
+import { Tecnologia } from './../models/tecnologia';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Estado } from './../models/estado';
@@ -29,14 +30,14 @@ export class DropdownService {
     ];
   }
 
-  getTecnologias() {
-
-    return [
+  getTecnologias(): Tecnologia[] {
+    let tecnologias: Tecnologia[] = [
       { nome: 'java', desc: 'Java' },
       { nome: 'javascript', desc: 'JavaScript' },
       { nome: 'php', desc: 'PHP' },
       { nome: 'ruby', desc: 'Ruby' }
     ];
+    return tecnologias;
   }
 
   getNewsletter() {
