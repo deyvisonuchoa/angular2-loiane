@@ -150,4 +150,13 @@ export class DataFormComponent implements OnInit {
     }
   }
 
+  setarCargo(){
+    const cargo = { nome: 'Dev', nivel: 'Pleno', desc: 'Dev Pl' };
+    this.form.get('cargo').setValue(cargo);
+  }
+
+  compararCargos(obj1, obj2){
+    return obj1 && obj2 ? ( obj1.nome === obj2.nome && obj1.nivel === obj2.nivel) : obj1 === obj2;
+  }
+
 }
