@@ -17,6 +17,7 @@ export class DataFormComponent implements OnInit {
   form: FormGroup;
   //estados: Estado[];
   estados: Observable<Estado[]>;
+  cargos: any[];
 
   constructor(private formBuilder: FormBuilder, private http: HttpClient,
     private dropdownService: DropdownService, private cepService: ConsultaCepService) { }
@@ -27,6 +28,8 @@ export class DataFormComponent implements OnInit {
       .subscribe(dados => this.estados = dados);*/
 
     this.estados = this.dropdownService.getEstados();
+
+    this.cargos = this.dropdownService.getCargos();
 
     /*this.form = new FormGroup({
       nome: new FormControl(null),
@@ -49,7 +52,9 @@ export class DataFormComponent implements OnInit {
         bairro: [null, [Validators.required]],
         cidade: [null, [Validators.required]],
         estado: [null, [Validators.required]]
-      })
+      }),
+
+      cargo: [null]
     });
 
     // Validators.pattern("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")

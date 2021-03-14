@@ -26,7 +26,12 @@ export class AuthService {
       this.usuarioAutenticado = false;
 
       this.exibeMenu.emit(false);
-    }    
+    }
+  }
+
+  desconectar(){
+    this.usuarioAutenticado = false;
+    this.router.navigate(['/login'])
   }
 
   verificaAutenticacao(){
