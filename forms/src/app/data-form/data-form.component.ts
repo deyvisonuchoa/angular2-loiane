@@ -7,8 +7,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Estado } from '../shared/models/estado';
 import { DropdownService } from '../shared/services/dropdown.service';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { EMPTY, empty, Observable } from 'rxjs';
+import { distinctUntilChanged, map, switchMap, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-data-form',
@@ -76,6 +76,15 @@ export class DataFormComponent implements OnInit {
       termos: [null, [Validators.pattern('true')]],
       frameworks: this.buildFrameworks()
     });
+
+    this.form.get('endereco.cep').statusChanges
+      .pipe(
+        distinctUntilChanged(),
+        switchMap(status => status === 'VALID' ?
+          this.cepService.consultaCEP(this.form.get('endereco.cep').value)
+          : EMPTY)
+      )
+      .subscribe(dados => dados ? this.populaEndereco(dados) : {})
 
     // Validators.pattern("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
   }
