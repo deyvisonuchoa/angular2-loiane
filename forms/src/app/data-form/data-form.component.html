@@ -6,10 +6,8 @@
         <div class="col-sm-12">
             <input type="text" class="form-control" id="nome" placeholder="Nome"
              formControlName="nome">
-            <app-campo-control
-            [mostrarErro]="verificaValidTouched('nome')"
-            msgErro="Nome é obrigatório">
-            </app-campo-control>
+            <app-error-msg [control]="form.get('nome')" label="Nome">
+            </app-error-msg>
         </div>
     </div>
 

@@ -4,13 +4,15 @@ import { DropdownService } from './services/dropdown.service';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
+import { ErrorMsgComponent } from './error-msg/error-msg.component';
 
 
 
 @NgModule({
   declarations: [
     FormDebugComponent,
-    CampoControlComponent
+    CampoControlComponent,
+    ErrorMsgComponent
   ],
   imports: [
     CommonModule,
@@ -18,7 +20,8 @@ import { HttpClientModule } from '@angular/common/http';
   ],
   exports:[
     FormDebugComponent,
-    CampoControlComponent
+    CampoControlComponent,
+    ErrorMsgComponent
   ],
   providers: [DropdownService]
 })
