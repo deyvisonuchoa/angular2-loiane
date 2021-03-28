@@ -33,6 +33,27 @@
         </div>
     </div>
 
+    <div class="form-group" >
+        <div class="col-sm-12" [ngClass]="aplicaCssErro('emailConfirmacao')">
+            <label for="emailConfirmacao" class="control-label">Confirmar Email</label>
+        </div>
+
+        <div class="col-sm-12">
+            <input type="email" class="form-control" id="emailConfirmacao"
+             placeholder="email@email.com"
+            formControlName="emailConfirmacao">
+            <app-campo-control
+            [mostrarErro]="!verificaRequeired('emailConfirmacao')"
+            msgErro="Email de confirmacao é obrigatório">
+            </app-campo-control>
+            <app-campo-control
+            [mostrarErro]="form.get('emailConfirmacao').hasError('equalsTo')"
+            msgErro="Email de confirmacao diferente">
+            </app-campo-control>
+            <!-- [mostrarErro]="form.controls['email']" -->
+        </div>
+    </div>
+
     <div formGroupName="endereco">
         <div class="form-group">
             <div class="col-md-3"[ngClass]="aplicaCssErro('endereco.cep')">
@@ -176,8 +197,8 @@
             </label>
           </div>
 
-          <app-campo-control-erro [mostrarErro]="!frameworks.valid" msgErro="Selecione 1 framework">
-          </app-campo-control-erro>
+          <app-campo-control [mostrarErro]="!frameworks.valid" msgErro="Selecione 1 framework">
+          </app-campo-control>
         </div>
       </div>
     </div>

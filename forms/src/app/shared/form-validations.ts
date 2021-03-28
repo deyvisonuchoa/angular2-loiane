@@ -1,4 +1,4 @@
-import { FormArray, FormControl } from '@angular/forms';
+import { FormArray, FormControl, FormGroup } from '@angular/forms';
 
 export class FormValidations {
 
@@ -28,5 +28,31 @@ export class FormValidations {
     }
 
     return null;
+  }
+
+  static equalsTo(otherField: string){
+    const validator = (formControl: FormControl) => {
+      if(otherField == null){
+        throw new Error('É necessario informar 1 campo');
+      }
+
+      if(!formControl.root || !(<FormGroup>formControl.root).controls ){
+        return null;
+      }
+
+      const field = (<FormGroup>formControl.root).get(otherField);
+
+      if(!field){
+        throw new Error('É necessario informar um campo válido')
+      }
+
+      if(field.value !== formControl.value){
+        return { equalsTo: otherField}
+      }
+
+      return null;
+    };
+
+    return validator;
   }
 }
