@@ -148,6 +148,32 @@
       </div>
     </div>
 
+    <div class="form-group">
+      <div class="col-md-3" [ngClass]="aplicaCssErro('termos')">
+        <div class="checkbox">
+          <label class="checkbox-inline">
+            <input type="checkbox" formControlName="termos"> Aceito os termos.
+          </label>
+          <!--<app-error-msg [control]="formulario.get('termos')" label="Aceito os termos"></app-error-msg>
+          app-campo-control-erro [mostrarErro]="!formulario.get('termos').valid" msgErro="Por favor, aceite os termos.">
+          </app-campo-control-erro-->
+        </div>
+      </div>
+
+      <div class="col-md-3" [ngClass]="aplicaCssErro('frameworks')">
+        <label for="framewoks">Frameworks</label>
+        <div id="frameworks" class="row">
+          <div class="checkbox col-sm-3"
+          formArrayName="frameworks"
+          *ngFor="let item of frameworks.controls; let i = index">
+            <label class="checkbox-inline">
+              <input type="checkbox" [formControlName]="i"> {{frameworksList[i]}}
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <button type="submit" class="btn btn-primary">Submit</button>
     <!--<button type="submit" class="btn btn-primary" [disabled]="!form.valid">Submit</button>-->
     <button  class="btn btn-default" (click)="reset()">Cancelar</button>

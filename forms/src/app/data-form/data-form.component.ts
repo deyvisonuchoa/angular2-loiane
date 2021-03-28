@@ -1,8 +1,9 @@
+import { map } from 'rxjs/operators';
 import { Tecnologia } from './../shared/models/tecnologia';
 import { ConsultaCepService } from './../shared/services/consulta-cep.service';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Endereco } from '../shared/models/endereco';
 import { Estado } from '../shared/models/estado';
 import { DropdownService } from '../shared/services/dropdown.service';
@@ -21,6 +22,8 @@ export class DataFormComponent implements OnInit {
   cargos: any[];
   tecnologias: Tecnologia[];
   newsletterOp: any[];
+
+  frameworksList: string[] = ['react', 'vue', 'angular', 'express'];
 
   constructor(private formBuilder: FormBuilder, private http: HttpClient,
     private dropdownService: DropdownService, private cepService: ConsultaCepService) { }
@@ -64,16 +67,47 @@ export class DataFormComponent implements OnInit {
 
       cargo: [null],
       tecnologias: [null],
-      newsletter: ['s']
+      newsletter: ['s'],
+      termos: [null, [Validators.pattern('true')]],
+      frameworks: this.buildFrameworks()
     });
 
     // Validators.pattern("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
   }
 
+  buildFrameworks() {
+
+    const values = this.frameworksList.map(v => new FormControl(false));
+    return this.formBuilder.array(values) as FormArray;
+
+    /*
+    this.formBuilder.array([
+      new FormControl(false),
+      new FormControl(false),
+      new FormControl(false),
+      new FormControl(false)
+    ]);
+    */
+  }
+
+  get frameworks() : FormArray {
+    return this.form.get("frameworks") as FormArray
+  }
+
   onSubmit(): void{
-    console.log(this.form);
+
+    let valueSubmit = Object.assign({}, this.form.value);
+
+    valueSubmit = Object.assign(valueSubmit, {
+      frameworks: valueSubmit.frameworks
+      .map((v, i) => v ? this.frameworksList[i] : null)
+      .filter( v => v !== null)
+    });
+
+    console.log(valueSubmit);
+
     if (this.form.valid) {
-      this.http.post('https://httpbin.org/post', JSON.stringify(this.form.value))
+      this.http.post('https://httpbin.org/post', JSON.stringify(valueSubmit))
         .subscribe(data => {
           console.log(data);
 
