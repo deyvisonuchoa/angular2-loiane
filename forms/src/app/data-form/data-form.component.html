@@ -22,12 +22,24 @@
             <input type="email" class="form-control" id="email" placeholder="email@email.com"
             formControlName="email">
             <app-campo-control
-            [mostrarErro]="verificaValidTouched('email')"
+            [mostrarErro]="!verificaRequeired('email')"
             msgErro="Email é obrigatório">
             </app-campo-control>
             <app-campo-control
             [mostrarErro]="verificaEmailInvalido()"
             msgErro="Email inválido">
+            </app-campo-control>
+            <app-campo-control
+            [mostrarErro]="form.get('email').status === 'PENDING'"
+            msgErro="Validando email">
+            </app-campo-control>
+            <app-campo-control
+            [mostrarErro]="form.get('email').status === 'VALID'"
+            msgErro="email valido">
+            </app-campo-control>
+            <app-campo-control
+            [mostrarErro]="form.get('email').hasError('emailInvalido')"
+            msgErro=" email ja cadastrado">
             </app-campo-control>
             <!-- [mostrarErro]="form.controls['email']" -->
         </div>
