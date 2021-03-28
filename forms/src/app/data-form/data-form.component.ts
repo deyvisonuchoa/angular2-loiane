@@ -1,10 +1,9 @@
-import { map } from 'rxjs/operators';
+import { FormValidations } from './../shared/form-validations';
 import { Tecnologia } from './../shared/models/tecnologia';
 import { ConsultaCepService } from './../shared/services/consulta-cep.service';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Endereco } from '../shared/models/endereco';
 import { Estado } from '../shared/models/estado';
 import { DropdownService } from '../shared/services/dropdown.service';
 import { Observable } from 'rxjs';
@@ -78,7 +77,7 @@ export class DataFormComponent implements OnInit {
   buildFrameworks() {
 
     const values = this.frameworksList.map(v => new FormControl(false));
-    return this.formBuilder.array(values) as FormArray;
+    return this.formBuilder.array(values, FormValidations.requiredMinheckbox()) as FormArray;
 
     /*
     this.formBuilder.array([

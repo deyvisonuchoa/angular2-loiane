@@ -170,6 +170,9 @@
               <input type="checkbox" [formControlName]="i"> {{frameworksList[i]}}
             </label>
           </div>
+
+          <app-campo-control-erro [mostrarErro]="!frameworks.valid" msgErro="Selecione 1 framework">
+          </app-campo-control-erro>
         </div>
       </div>
     </div>
