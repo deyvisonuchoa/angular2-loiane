@@ -42,7 +42,12 @@
                 (blur)="consultaCEP()">
 
                 <app-campo-control
-                [mostrarErro]="verificaValidTouched('endereco.cep')"
+                [mostrarErro]="form.get('endereco.cep').hasError('cepInvalido')"
+                msgErro="Cep é Invalido">
+                </app-campo-control>
+
+                <app-campo-control
+                [mostrarErro]="!verificaRequeired('endereco.cep')"
                 msgErro="Cep é obrigatório">
                 </app-campo-control>
             </div>
