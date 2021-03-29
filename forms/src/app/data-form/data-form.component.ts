@@ -10,6 +10,7 @@ import { DropdownService } from '../shared/services/dropdown.service';
 import { EMPTY, empty, Observable } from 'rxjs';
 import { distinctUntilChanged, map, switchMap, tap } from 'rxjs/operators';
 import { BaseFormComponent } from '../shared/base-form/base-form.component';
+import { Cidade } from '../shared/models/cidade';
 
 @Component({
   selector: 'app-data-form',
@@ -19,8 +20,9 @@ import { BaseFormComponent } from '../shared/base-form/base-form.component';
 export class DataFormComponent extends BaseFormComponent implements OnInit {
 
   // form: FormGroup;
-  //estados: Estado[];
-  estados: Observable<Estado[]>;
+  estados: Estado[];
+  cidades: Cidade[];
+  //estados: Observable<Estado[]>;
   cargos: any[];
   tecnologias: Tecnologia[];
   newsletterOp: any[];
@@ -44,7 +46,8 @@ export class DataFormComponent extends BaseFormComponent implements OnInit {
     /*this.dropdownService.getEstados()
       .subscribe(dados => this.estados = dados);*/
 
-    this.estados = this.dropdownService.getEstados();
+    this.dropdownService.getEstados()
+      .subscribe((dados: Estado[]) => this.estados = dados);
 
     this.cargos = this.dropdownService.getCargos();
 
@@ -92,6 +95,15 @@ export class DataFormComponent extends BaseFormComponent implements OnInit {
           : EMPTY)
       )
       .subscribe(dados => dados ? this.populaEndereco(dados) : {})
+
+
+    this.form.get('endereco.estado').valueChanges
+        .pipe(
+          map(estado => this.estados.filter(e => e.sigla == estado)),
+          map(estados => estados && estados.length > 0 ? estados[0].id : EMPTY),
+          switchMap(idEstado => this.dropdownService.getCidades(+idEstado))
+        )
+        .subscribe(dados => this.cidades = dados);
 
     // Validators.pattern("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
   }
