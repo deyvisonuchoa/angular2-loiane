@@ -2,6 +2,6 @@
   <label [attr.for]="id" class="control-label">{{ label }}</label>
   <input [type]="type" class="form-control"
     [id]="id" [readonly]="!!isReadOnly"
-    [(ngModel)]="value">
+    [(ngModel)]="value" (blur)="onTouchedCb($event)">
   <app-error-msg [control]="control" [label]="label"> </app-error-msg>
 </div>
